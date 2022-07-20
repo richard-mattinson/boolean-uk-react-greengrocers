@@ -27,25 +27,25 @@ export default function App() {
   // cart should be an array?
   // should use map to copy and update the cart each time it changes
 
-  const addToCart = (item) => {
-    console.log("Item id", item);
-    let cartItem = cartItems.find((cartItem) => {
-      return (cartItem.id === item.id)
+  const addToCart = item => {
+    // console.log('Cart', cartItems)
+    let cartItem = cartItems.find(cartItem => {
+      return cartItem.item.id === item.id
     })
-    if(cartItem !== undefined) {
-        const updateCart = cartItem.quantity++
-        setCartItems(updateCart)
+    if (cartItem !== undefined) {
+      // alert("Hello?")
+      cartItem.quantity++
+      const updateCart = [...cartItems]
+      setCartItems(updateCart)
     } else {
       cartItem = {
-        item : item,
-        quantity : 1
+        item: item,
+        quantity: 1
       }
-        const newCart = [...cartItems, cartItem]
-        console.log('New Cart, Cart Item', newCart, cartItem)
-        setCartItems(newCart)
+      const newCart = [...cartItems, cartItem]
+      // console.log('New Cart, Cart Item', newCart, cartItem)
+      setCartItems(newCart)
     }
-
-
 
     // use the id as a key to give the the item a 'stable identity'
     // pass the id here from the addToCart onClick to check during the process?
@@ -55,7 +55,7 @@ export default function App() {
     // - else, add item to cart with qty of 1
   }
 
-  const reduceQty = (item) => {
+  const reduceQty = item => {
     console.log('Item id', item)
     let cartItem = cartItems.find(cartItem => {
       return cartItem.id === item.id
@@ -63,22 +63,21 @@ export default function App() {
     if (cartItem.quantity === 1) {
       // remove item at 0 qty
     } else {
-    cartItem.quantity--
+      cartItem.quantity--
     }
-    const newCart = [...cartItems, cartItem]
+    const updateQty = [...cartItems]
     // console.log('New Cart, Cart Item', newCart, cartItem)
-    setCartItems(newCart)
+    setCartItems(updateQty)
   }
 
-  const increaseQty = (item) => {
+  const increaseQty = item => {
     console.log('Item id', item)
     let cartItem = cartItems.find(cartItem => {
       return cartItem.id === item.id
     })
-    cartItem.quantity++
-    const newCart = [...cartItems, cartItem]
-    // console.log('New Cart, Cart Item', newCart, cartItem)
-    setCartItems(newCart)
+      cartItem.quantity++
+      const updateCart = [...cartItems]
+      setCartItems(updateCart)
   }
 
   return (
@@ -88,14 +87,9 @@ export default function App() {
         <ul className="item-list store--item-list">
           {initialStoreItems.map((storeItem, itemId) => {
             return (
-            <Store 
-              key={itemId}
-              storeItem={storeItem}
-              addToCart={addToCart} 
-            />
+              <Store key={itemId} storeItem={storeItem} addToCart={addToCart} />
             )
-          })
-        }
+          })}
         </ul>
       </header>
 
@@ -105,15 +99,14 @@ export default function App() {
           <ul className="item-list cart--item-list">
             {cartItems.map((cartItem, itemId) => {
               return (
-                <Cart 
+                <Cart
                   key={itemId}
                   cartItem={cartItem}
                   reduceQty={reduceQty}
                   increaseQty={increaseQty}
-                /> 
-              )  
-          })
-          }
+                />
+              )
+            })}
           </ul>
         </div>
         <div className="total-section">
