@@ -95,6 +95,10 @@ button {
   border: 2px solid #757575;
 }
 
+#cart--item-name {
+  text-transform: capitalize;
+}
+
 @media only screen and (max-width: 450px) {
   .cart--item-list-container {
     border: none;

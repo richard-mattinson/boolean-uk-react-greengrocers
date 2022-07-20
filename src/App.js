@@ -33,16 +33,18 @@ export default function App() {
       return (cartItem.id === item.id)
     })
     if(cartItem !== undefined) {
-      cartItem.quantity ++
+        const updateCart = cartItem.quantity++
+        setCartItems(updateCart)
     } else {
       cartItem = {
         item : item,
         quantity : 1
       }
+        const newCart = [...cartItems, cartItem]
+        console.log('New Cart, Cart Item', newCart, cartItem)
+        setCartItems(newCart)
     }
-    const newCart = [...cartItems, cartItem];
-    console.log("New Cart, Cart Item", newCart, cartItem);
-    setCartItems(newCart)
+
 
 
     // use the id as a key to give the the item a 'stable identity'
@@ -51,6 +53,32 @@ export default function App() {
     // need to loop through cart checking if an item is already inside
     // - if yes, update existing cart item qty
     // - else, add item to cart with qty of 1
+  }
+
+  const reduceQty = (item) => {
+    console.log('Item id', item)
+    let cartItem = cartItems.find(cartItem => {
+      return cartItem.id === item.id
+    })
+    if (cartItem.quantity === 1) {
+      // remove item at 0 qty
+    } else {
+    cartItem.quantity--
+    }
+    const newCart = [...cartItems, cartItem]
+    // console.log('New Cart, Cart Item', newCart, cartItem)
+    setCartItems(newCart)
+  }
+
+  const increaseQty = (item) => {
+    console.log('Item id', item)
+    let cartItem = cartItems.find(cartItem => {
+      return cartItem.id === item.id
+    })
+    cartItem.quantity++
+    const newCart = [...cartItems, cartItem]
+    // console.log('New Cart, Cart Item', newCart, cartItem)
+    setCartItems(newCart)
   }
 
   return (
@@ -80,7 +108,8 @@ export default function App() {
                 <Cart 
                   key={itemId}
                   cartItem={cartItem}
-                  // update qty function? 
+                  reduceQty={reduceQty}
+                  increaseQty={increaseQty}
                 /> 
               )  
           })
